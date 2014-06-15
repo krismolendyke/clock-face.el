@@ -1,0 +1,1 @@
+Silly package for interacting with Unicode =CLOCK FACE= characters.
