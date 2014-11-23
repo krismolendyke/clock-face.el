@@ -26,15 +26,13 @@
   (if (< minute 30) " OCLOCK" "-THIRTY"))
 
 (defun clock-face--get-char-name (hour minute)
-  "Get the Unicode name for the clock face character nearest to
-`HOUR' and `MINUTE'."
+  "The Unicode name for clock face character nearest to `HOUR' and `MINUTE'."
   (let ((h (cdr (assoc hour clock-face--hour->english)))
         (m (clock-face--oclock-or-thirty (string-to-number minute))))
     (concat "CLOCK FACE " h m)))
 
 (defun clock-face--get-char (hour minute)
-  "Get the Unicode clock face character nearest to `HOUR' and
-`MINUTE'."
+  "The Unicode clock face character nearest to `HOUR' and `MINUTE'."
   (cdr (assoc (clock-face--get-char-name hour minute) (ucs-names))))
 
 (defun clock-face--current ()
