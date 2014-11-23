@@ -6,33 +6,46 @@
 
 (provide 'clock-face)
 
-(defvar clock-face--hour->face
-  '(("01" . "🕐")
-    ("02" . "🕑")
-    ("03" . "🕒")
-    ("04" . "🕓")
-    ("05" . "🕔")
-    ("06" . "🕕")
-    ("07" . "🕖")
-    ("08" . "🕗")
-    ("09" . "🕘")
-    ("10" . "🕙")
-    ("11" . "🕚")
-    ("12" . "🕛"))
-  "Mapping of zero-padded hour to Unicode character string.")
+(defvar clock-face--hour->english
+  '(("01" . "ONE")
+    ("02" . "TWO")
+    ("03" . "THREE")
+    ("04" . "FOUR")
+    ("05" . "FIVE")
+    ("06" . "SIX")
+    ("07" . "SEVEN")
+    ("08" . "EIGHT")
+    ("09" . "NINE")
+    ("10" . "TEN")
+    ("11" . "ELEVEN")
+    ("12" . "TWELVE"))
+  "Mapping of zero-padded hour to English.")
 
-(defun clock-face--get (hour)
-  "Get the clock face for the given hour."
-  (cdr (assoc hour clock-face--hour->face)))
+(defun clock-face--oclock-or-thirty (minute)
+  "Get the most accurate Unicode character suffix for `MINUTE'."
+  (if (< minute 30) " OCLOCK" "-THIRTY"))
 
-(defun clock-face-current ()
-  "Get the current clock face character string."
-  (clock-face--get (format-time-string "%I")))
+(defun clock-face--get-char-name (hour minute)
+  "Get the Unicode name for the clock face character nearest to
+`HOUR' and `MINUTE'."
+  (let ((h (cdr (assoc hour clock-face--hour->english)))
+        (m (clock-face--oclock-or-thirty (string-to-number minute))))
+    (concat "CLOCK FACE " h m)))
+
+(defun clock-face--get-char (hour minute)
+  "Get the Unicode clock face character nearest to `HOUR' and
+`MINUTE'."
+  (cdr (assoc (clock-face--get-char-name hour minute) (ucs-names))))
+
+(defun clock-face--current ()
+  "Get the Unicode clock face character for the current time."
+  (clock-face--get-char (format-time-string "%I")
+                        (format-time-string "%M")))
 
 (defun clock-face-insert-current ()
-  "Insert the current clock face character string."
+  "Insert the Unicode clock face representing the current time."
   (interactive)
-  (insert (clock-face-current)))
+  (insert-char (clock-face--current)))
 
 (provide 'clock-face)
 
