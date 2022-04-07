@@ -33,7 +33,7 @@
 
 (defun clock-face--get-char (hour minute)
   "The Unicode clock face character nearest to `HOUR' and `MINUTE'."
-  (cdr (assoc (clock-face--get-char-name hour minute) (ucs-names))))
+  (gethash (clock-face--get-char-name hour minute) (ucs-names)))
 
 (defun clock-face--current ()
   "Get the Unicode clock face character for the current time."
@@ -43,7 +43,7 @@
 (defun clock-face-insert-current ()
   "Insert the Unicode clock face representing the current time."
   (interactive)
-  (insert-char (clock-face--current)))
+  (ucs-insert (clock-face--current)))
 
 (provide 'clock-face)
 
