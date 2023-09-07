@@ -31,19 +31,15 @@
         (m (clock-face--oclock-or-thirty (string-to-number minute))))
     (concat "CLOCK FACE " h m)))
 
-(defun clock-face--get-char (hour minute)
-  "The Unicode clock face character nearest to `HOUR' and `MINUTE'."
-  (gethash (clock-face--get-char-name hour minute) (ucs-names)))
-
 (defun clock-face--current ()
   "Get the Unicode clock face character for the current time."
-  (clock-face--get-char (format-time-string "%I")
-                        (format-time-string "%M")))
+  (clock-face--get-char-name (format-time-string "%I")
+                             (format-time-string "%M")))
 
 (defun clock-face-insert-current ()
   "Insert the Unicode clock face representing the current time."
   (interactive)
-  (ucs-insert (clock-face--current)))
+  (insert (char-from-name (clock-face--current))))
 
 (provide 'clock-face)
 
