@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;; clock-face.el --- Interact with Unicode CLOCK FACE symbols.
 
 ;;; Commentary:
